@@ -1,8 +1,3 @@
-# ============================================================
-# main.py
-# FastAPI backend for Chest X-Ray Pneumonia Detection
-# ============================================================
-
 from fastapi import (
     FastAPI,
     UploadFile,
@@ -31,10 +26,6 @@ from app.gradcam import generate_gradcam
 from app.schemas import PredictionResponse
 
 
-# ============================================================
-# FastAPI Application
-# ============================================================
-
 app = FastAPI(
     title="Chest X-Ray Pneumonia Detection API",
     description=(
@@ -45,9 +36,6 @@ app = FastAPI(
 )
 
 
-# ============================================================
-# CORS
-# ============================================================
 
 app.add_middleware(
     CORSMiddleware,
@@ -62,9 +50,6 @@ app.add_middleware(
 )
 
 
-# ============================================================
-# Root
-# ============================================================
 
 @app.get("/")
 def root():
@@ -78,9 +63,6 @@ def root():
     }
 
 
-# ============================================================
-# Health Check
-# ============================================================
 
 @app.get("/health")
 def health():
@@ -92,9 +74,6 @@ def health():
     }
 
 
-# ============================================================
-# Prediction
-# ============================================================
 
 @app.post(
     "/predict",
@@ -106,10 +85,7 @@ async def predict_image(
 
     try:
 
-        # ----------------------------------------------------
-        # Validate upload
-        # ----------------------------------------------------
-
+        
         if file is None:
 
             raise HTTPException(
@@ -117,10 +93,7 @@ async def predict_image(
                 detail="No file uploaded."
             )
 
-        # ----------------------------------------------------
-        # Validate content type
-        # ----------------------------------------------------
-
+        
         if not file.content_type:
 
             raise HTTPException(
@@ -137,34 +110,20 @@ async def predict_image(
                 detail="Please upload an image file."
             )
 
-        # ----------------------------------------------------
-        # Read original image
-        # ----------------------------------------------------
-
+        
         image = await read_image(file)
 
-        # ----------------------------------------------------
-        # Preprocess
-        # ----------------------------------------------------
-
+        
         image_tensor = preprocess_image(
             image
         )
 
-        # ----------------------------------------------------
-        # Prediction
-        # ----------------------------------------------------
-
+        
         result = predict(
             image_tensor
         )
 
-        # ----------------------------------------------------
-        # IMPORTANT:
-        # Use the SAME class predicted by the model
-        # for Grad-CAM.
-        # ----------------------------------------------------
-
+        
         predicted_label = result[
             "prediction"
         ]
@@ -173,20 +132,14 @@ async def predict_image(
             predicted_label
         )
 
-        # ----------------------------------------------------
-        # Grad-CAM
-        # ----------------------------------------------------
-
+        
         gradcam = generate_gradcam(
             image_tensor,
             image,
             target_class=target_class
         )
 
-        # ----------------------------------------------------
-        # Final response
-        # ----------------------------------------------------
-
+        
         return PredictionResponse(
 
             success=True,
@@ -206,18 +159,12 @@ async def predict_image(
             gradcam=gradcam
         )
 
-    # ========================================================
-    # HTTP errors
-    # ========================================================
-
+    
     except HTTPException:
 
         raise
 
-    # ========================================================
-    # Invalid image
-    # ========================================================
-
+    
     except UnidentifiedImageError:
 
         raise HTTPException(
@@ -228,10 +175,7 @@ async def predict_image(
             )
         )
 
-    # ========================================================
-    # Model/file errors
-    # ========================================================
-
+    
     except FileNotFoundError:
 
         raise HTTPException(
@@ -239,10 +183,7 @@ async def predict_image(
             detail="Model file not found."
         )
 
-    # ========================================================
-    # PyTorch/Grad-CAM errors
-    # ========================================================
-
+   
     except RuntimeError as e:
 
         raise HTTPException(
@@ -252,10 +193,7 @@ async def predict_image(
             )
         )
 
-    # ========================================================
-    # Other errors
-    # ========================================================
-
+    
     except Exception as e:
 
         raise HTTPException(
