@@ -1,0 +1,15 @@
+
+PROJECT: Chest X-Ray Pneumonia Detection
+
+MODEL:
+MobileNetV3 Large
+
+TRANSFER LEARNING:
+Fine Tuning
+
+TEST RESULTS
+
+Accuracy  : 0.9771
+Precision : 0.9828
+Recall    : 0.9859
+F1 Score  : 0.9843

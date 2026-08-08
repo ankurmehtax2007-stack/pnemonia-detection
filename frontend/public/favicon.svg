@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+  <defs>
+    <linearGradient id="logo-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="50%" stop-color="#2563eb" />
+      <stop offset="100%" stop-color="#2dd4bf" />
+    </linearGradient>
+  </defs>
+  <!-- Outer gradient border container -->
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#logo-grad)" />
+  <!-- Inner dark slate body -->
+  <rect x="5" y="5" width="54" height="54" rx="13" fill="#0f172a" />
+  <!-- Activity / ECG Line in sky blue -->
+  <path d="M16 32h8l4-12 6 24 6-16 4 4h8" stroke="#38bdf8" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
